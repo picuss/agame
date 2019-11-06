@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>dd</title>
+	<script type="text/javascript" src="trinket.js"></script>
+	<style type="text/css">
+		body {
+			background: #FFF;
+		}
+	</style>
+</head>
+<body onload="f()">
+	<div id="ddd"></div>
+	<script type="text/javascript">   var block = 10.35634742323;
+
+		var _width = 1400,_height = 500;
+		var CNV;
+
+		var console,console2;
+		var _3d = false;
+
+		var wheel = new Image();
+		var wheel2 = new Image();
+		var car = new Image();
+
+		wheel_base = 2460;
+		
+		var c_n = 0, cn_c = 0,speedcn = 0;
+		var cvx = 0, cvy = 0;
+		var amrt = 0;
+		var max_map = 40;
+
+		var x1 = 500,y1 = 300,vx1 = 1,vy1 = 0, vk1=0;
+		var x2 = 100,y2 = 300,vx2 = 0,vy2 = 0, vk2=0;
+		var ih = 0;
+		var range;
+
+		var gg =[];
+		var gg1=[];
+		var gg2=[];
+		var gg3=[];
+		var gg4=[];
+		var gg5=[];
+
+		var speed = 0; nv=0.008;
+
+		var gs = false;
+
+		function f(){
+
+
+			_width = document.body.clientWidth;
+			wheel.src = "4.png";
+			wheel2.src = "8.png";
+			car.src = "3.png";
+
+			CreateCanvas("ddd",_width,_height);
+			
+			gg[0]=400;
+
+			for (var i=1;i<max_map;i++){
+				//gg[i] = gg[i-1] + (Math.random()*30);
+				gg[i] = gg[i-1] + (Math.random()*60 - 30);
+				gg1[i] = gg[i] +Math.random()*10 +5;
+				gg2[i] = gg1[i]+Math.random()*20 +5;
+				gg3[i] = gg2[i]+Math.random()*40 +5;
+				gg4[i] = gg3[i]+Math.random()*80 +5;
+				gg5[i] = gg4[i]+Math.random()*120 +5;
+				//gg[i] = Math.random()*200 + 300;
+			}
+
+			CNV = MyCanvas('c');
+			setInterval("render()",5);
+		}
+
+		function render(){
+			ph();
+
+			var sft = x1 - _width/2 + speed*30;
+			var sfty = y1 - _height/2 - (y1 - _height/2)/3;
+			drawbox(CNV,_width/2,_height/2,_width,_height,0,"#FFF");
+			var mm = Math.floor(x1/100);
+			
+			
+			drawimage(CNV,car,x2 + (x1 - x2)/2 - sft,y2 + (y1 - y2)/2 - sfty + amrt,c_n);
+			for (var i = mm-7; i < mm+9; i++) {
+				drawline(CNV,i*100 - sft,gg[i] - sfty,(i+1)*100 - sft,gg[i+1] - sfty,"#222");
+
+				var jj2 = (i*100 - x1+50);
+/*
+				drawline(CNV,i*100 - sft + jj2/35 ,gg1[i] - sfty,(i+1)*100 - sft  + jj2/35 +2,gg1[i+1] - sfty,"#AAA"); //1
+				drawline(CNV,i*100 - sft + jj2/30 ,gg2[i] - sfty,(i+1)*100 - sft  + jj2/30 +4,gg2[i+1] - sfty,"#AAA");//2
+				drawline(CNV,i*100 - sft + jj2/20 ,gg3[i] - sfty,(i+1)*100 - sft  + jj2/20 +5,gg3[i+1] - sfty,"#AAA");//3
+				drawline(CNV,i*100 - sft + jj2/10 ,gg4[i] - sfty,(i+1)*100 - sft  + jj2/10 +10,gg4[i+1] - sfty,"#AAA");//4
+				drawline(CNV,i*100 - sft + jj2/5 ,gg5[i]  - sfty,(i+1)*100 - sft  + jj2/5 +20,gg5[i+1]  - sfty,"#AAA");
+*/
+//*
+Drvpolygon(CNV,i*100 - sft         ,gg[i] - sfty ,(i+1)*100 - sft              ,gg[i+1] - sfty ,(i+1)*100 - sft  + jj2/35 +2 ,gg1[i+1] - sfty ,i*100 - sft + jj2/35,gg1[i] - sfty ,"");
+Drvpolygon(CNV,i*100 - sft + jj2/35,gg1[i] - sfty,(i+1)*100 - sft  + jj2/35 +4 ,gg1[i+1] - sfty,(i+1)*100 - sft  + jj2/30 +4 ,gg2[i+1] - sfty ,i*100 - sft + jj2/30,gg2[i] - sfty ,"");
+Drvpolygon(CNV,i*100 - sft + jj2/30,gg2[i] - sfty,(i+1)*100 - sft  + jj2/30 +4 ,gg2[i+1] - sfty,(i+1)*100 - sft  + jj2/20 +5 ,gg3[i+1] - sfty ,i*100 - sft + jj2/20,gg3[i] - sfty ,"");
+Drvpolygon(CNV,i*100 - sft + jj2/20,gg3[i] - sfty,(i+1)*100 - sft  + jj2/20 +5 ,gg3[i+1] - sfty,(i+1)*100 - sft  + jj2/10 +10,gg4[i+1] - sfty ,i*100 - sft + jj2/10,gg4[i] - sfty ,"");
+Drvpolygon(CNV,i*100 - sft + jj2/10,gg4[i] - sfty,(i+1)*100 - sft  + jj2/10 +10,gg4[i+1] - sfty,(i+1)*100 - sft  + jj2/5 +20 ,gg5[i+1]  - sfty,i*100 - sft + jj2/5 ,gg5[i]  - sfty,"");
+
+Drvpolygon(CNV,i*100 - sft + jj2/5 ,gg5[i]  - sfty,(i+1)*100 - sft  + jj2/5 +20 ,gg5[i+1]  - sfty,(i+1)*100 - sft  + jj2/5 +20 ,gg5[i+1]  - sfty + 300,i*100 - sft + jj2/5 ,gg5[i]  - sfty + 300,"");
+//*/
+
+
+
+
+				if (_3d){
+					drawline(CNV,i*100 - sft + (i*100 - x1+50)/30,gg[i] - sfty+10,(i+1)*100 - sft + (i*100 - x1+50)/30 +2,gg[i+1] - sfty+10,"#222");
+					drawline(CNV,i*100 - sft,gg[i] - sfty,i*100 - sft + (i*100 - x1+50)/30,gg[i] - sfty+10,"#333");
+				}
+				
+			};
+
+			//drawline(CNV,x1- sft,y1 - sfty,x2 - sft,y2 - sfty,"#555");
+			drawimage(CNV,wheel2,x1 - sft,y1 - sfty,vk2);
+			drawimage(CNV,wheel2,x2 - sft,y2 - sfty,vk2);
+
+			drawline(CNV,x2 + (x1 - x2)/2 - sft,y2 + (y1 - y2)/2 - sfty,x2 + (x1 - x2)/2 - sft,y2 + (y1 - y2)/2 - sfty + amrt * 5,"#000");
+
+			CNV.font = "Arial";
+			//CNV.strokeText(speed, 50,50);
+			CNV.strokeText(console, 50,70);
+			CNV.strokeText(console2, 50,90);
+		}
+
+		
+
+
+		function ph(){
+			cvx = speed;
+			if (gs) {
+				if (Math.abs(speed)<block){
+					speed += nv;
+					vk1 += 625 * nv; 
+				}
+			} else {
+				speed-=speed/800;
+			}
+
+			cvx -= speed;
+			//vx1 = speed;
+
+			x1+=vx1;
+			y1+=vy1;
+
+			var l1 = hhhh(x1);
+			var l2 = hhhh(x2);
+
+
+			if (y1>l1){
+				y1=l1;
+				if (vy1<1){
+				vy1=0;
+				} else {
+				vy1=-vy1/2+Math.random();   //  <----- 000
+				} //vx1=vx1-(vx1/(25-Math.random()));
+				
+				if (gs){vk1+=nv*500};
+
+				
+				var gkld = y1 - y2;
+				speed += gkld/3500;
+				
+				
+
+				vx1 = speed;     //   удалить 
+			} else {
+				vy1+=0.1;
+			}
+
+			x2+=vx2;
+
+			y2+=vy2;
+
+			if (y2>l2){
+				y2=l2;
+				if (vy2<1){
+					vy2=0;
+				} else {
+					vy2=-vy2/2+Math.random();   //  <----- 000
+				}
+				vx2=vx2-(vx2/700);
+			
+			
+
+			} else {
+				vy2+=0.1;
+			}
+			vk2 = x2;
+
+			///////////////////////////////////////////
+			var gipoten = Math.sqrt(Math.abs((y2-y1) * (y2-y1)) + Math.abs((x2-x1) * (x2-x1)));
+
+
+
+			x2=x1 - Math.sqrt(Math.abs(wheel_base - Math.abs((y2-y1) * (y2-y1))));
+
+			vk2+=(x2*5);
+			range = Math.sqrt(Math.abs((x2-x1) * (x2-x1)) + Math.abs((y2-y1) * (y2-y1)));
+
+			var gkld = y1 - y2;
+			speed += gkld/3500;
+
+			speedcn = c_n;
+			
+			c_n = 180 / Math.PI * Math.sin(Math.abs(y1-y2)/gipoten);
+			if (y1-y2<0){c_n*=-1;}
+
+			speedcn -= c_n; 
+
+			cn_c = 0;
+			speedcn
+
+
+		}
+		var lpllplpl = 0;
+
+		function hhhh(a){
+			var h = Math.floor(a/100);
+			var j1 = gg[h];
+			var j2 = gg[h+1];
+			var proc = a-h*100;
+
+			var res = j1 - 9 - (j1 - j2)/100*proc;
+			if (_3d){res+=5;}
+			return res;
+		}
+
+		function ab(a,n,jll){
+			var res = n + (a - n)/jll;
+			return res;
+		}
+
+
+
+		document.onkeydown = function(e){
+			//console.log(e.keyCode);
+			switch (e.keyCode){
+				//case 38:{vy1=-3; vy2=-3; break;}
+				case 39:{gs=true; nv=0.008; break;}
+				case 37:{gs=true; nv=-0.006; break;}
+				case 32:{speed = 0;  break;}
+			}
+			return false;
+		}
+
+		document.onkeyup = function(e){
+			switch (e.keyCode){
+				case 39:{gs=false; break;}
+				case 37:{gs=false; break;}
+			}
+			return false;
+		}
+
+		ID("ddd").onmousedown = function(e){
+			gs=true; nv=0.008;
+		}
+		
+		ID("ddd").onmouseup = function(e){
+			gs=false;
+		}
+
+	</script>
+</body>
+</html>
